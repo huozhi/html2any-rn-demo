@@ -1,3 +1,4 @@
+import he from 'he'
 import {tokenizer, parser} from 'html2any'
 import {getElement} from './utils'
 
@@ -16,7 +17,7 @@ export const transform = (node, next) => {
       const {tag, props} = getElement(node)
       return next(tag, props, transform(node.children, next))
     } else if (typeof node === 'string') {
-      return node
+      return he.decode(node)
     }
   }
   return null
