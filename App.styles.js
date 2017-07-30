@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     marginVertical: 20,
-    fontSize: 18
+    fontSize: 18,
   },
   preview: {
     borderWidth: 0.5,

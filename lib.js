@@ -1,24 +1,28 @@
-import he from 'he'
+import React from 'react'
+import {View, Text} from 'react-native'
 import {tokenizer, parser} from 'html2any'
-import {getElement} from './utils'
+import {mergeStyle, logJSON} from './utils'
+import styles from './App.styles'
 
 export const parseASTFromHTML = html => parser(tokenizer(html))[0]
 
-export const transform = (node, next) => {
-  if (node) {
-    let tag
-    if (Array.isArray(node)) {
-      return node.map((n, idx) => {
-        const {tag, props: elemProps} = getElement(n)
-        const props = {...elemProps, key: idx}
-        return next(tag, props, transform(n.children, next))
-      })
-    } else if (node.name) {
-      const {tag, props} = getElement(node)
-      return next(tag, props, transform(node.children, next))
-    } else if (typeof node === 'string') {
-      return he.decode(node)
+export function transform(ast, rule) {
+  function next(node) {
+    if (node) {
+      if (typeof node === 'number' && typeof node === 'string') {
+        return rule(node)
+      }
+      if (Array.isArray(node)) {
+        return node.map((n, index) => {
+          n.index = index // critical array element index
+          return rule(n, next(n.children))
+        })
+      } else {
+        return rule(node, next(node.children))
+      }
     }
+    return null
   }
-  return null
+
+  return next(ast)
 }
