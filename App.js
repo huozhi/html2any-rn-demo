@@ -1,12 +1,10 @@
 import React from 'react'
 import he from 'he'
 import {Text, View} from 'react-native'
-import {parseASTFromHTML, transform} from './lib'
+import {tokenizer, parser, transform} from 'html2any'
 import {logJSON, mergeStyle} from './utils'
 import {html} from './consts'
 import styles from './App.styles'
-
-const ast = parseASTFromHTML(html)
 
 function getElement(node, children) {
   if (typeof node === 'string') {
@@ -52,6 +50,8 @@ function getElement(node, children) {
 
 class App extends React.Component {
   render() {
+    const ast = parser(tokenizer(html))[0]
+
     return (
       <View style={styles.root}>
         <View>

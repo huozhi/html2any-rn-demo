@@ -14,11 +14,21 @@ Example HTML
 </p>
 ```
 
-will convert into
+will be converted into structure below
+
+```js
+{
+  name: 'p',
+  attribues: {},
+  children: '&amp;123',
+}
+```
+
+Then we'll convert the ast to the following component
 
 ```js
 <Text style={styles.paragraph}>
-   123
+  &123
 </Text>
 ```
 
