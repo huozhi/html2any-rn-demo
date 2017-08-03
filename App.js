@@ -1,63 +1,22 @@
 import React from 'react'
-import he from 'he'
-import {Text, View} from 'react-native'
+import {Text, View, ScrollView} from 'react-native'
 import {tokenizer, parser, transform} from 'html2any'
 import {logJSON, mergeStyle} from './utils'
-import {html} from './consts'
+import {getElement} from './lib'
+import {html, complexHtml} from './consts'
 import styles from './App.styles'
-
-function getElement(node, children) {
-  if (typeof node === 'string') {
-    return he.decode(node)
-  }
-  const {name, attribues} = node
-  let elem
-  switch (name) {
-    case 'p': {
-      elem = {
-        tag: Text,
-        props: mergeStyle(attribues, styles.paragraph),
-      }
-      break
-    }
-    case 'b': {
-      elem = {
-        tag: Text,
-        props: mergeStyle(attribues, styles.bold),
-      }
-      break
-    }
-    case 'div': {
-      elem = {
-        tag: View,
-        props: mergeStyle(attribues, styles.view),
-      }
-      break
-    }
-  }
-
-  if (!elem || !elem.tag) {
-    return null
-  }
-
-  // add react index prop
-  if (typeof node.index === 'number') {
-    Object.assign(elem.props, {key: node.index})
-  }
-
-  return React.createElement(elem.tag, elem.props, children)
-}
 
 class App extends React.Component {
   render() {
-    const ast = parser(tokenizer(html))[0]
-
+    const ast = parser(tokenizer(complexHtml))[0]
+    const component = transform(ast, getElement)
+  
     return (
-      <View style={styles.root}>
+      <ScrollView style={styles.root}>
         <View>
           <Text style={styles.title}>Transformed Tesult</Text>
           <View style={styles.preview}>
-            {transform(ast, getElement)}
+            {component}
           </View>
         </View>
 
@@ -67,7 +26,7 @@ class App extends React.Component {
             {logJSON(ast)}
           </Text>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
