@@ -3,7 +3,6 @@ import he from 'he'
 
 import {Text, View, Image, StyleSheet, Dimensions} from 'react-native'
 import {logJSON, mergeStyle} from './utils'
-// import styles from './App.style.js'
 
 const w = Dimensions.get('window')
 
@@ -21,11 +20,11 @@ const styles = StyleSheet.create({
   },
   strong: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   b: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   em: {
     fontSize: 16,
@@ -34,17 +33,18 @@ const styles = StyleSheet.create({
   span: {
     fontSize: 15,
   },
-  text: {
-
-  },
+  text: {},
   view: {
     width: w.width,
     height: w.height / 3,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
   },
   img: {
+    marginVertical: 20,
     width: 200,
     height: 100,
-    marginVertical: 20,
+
   }
 })
 
@@ -58,16 +58,22 @@ function getElement(node, children) {
     // RN does not have any method to inherit styles
     // so nested Text tags should be rendered as sibling Text nodes in a View better
     return he.decode(node)
-    // <Text>{he.decode(node)}</Text>
   }
   const {name, attributes} = node
   let elem
   if (textTag.indexOf(name) >= 0) {
+    const style = StyleSheet.flatten([styles.text, styles[name]])
     elem = {
       tag: Text,
-      // props: mergeStyle(attributes, StyleSheet.flatten(styles.text, styles[name])),
-      props: {style: styles[name]},
+      props: {...attribues, style: styles[name]},
     }
+    children = React.Children.map(children, (c) => {
+      if (typeof c === 'string') {
+        return <Text style={style}>{he.decode(c)}</Text>
+      } else if (c) {
+        return React.cloneElement(c, {...c.props}, c.children)
+      }
+    })
   } else if (name === 'div') {
     elem = {
       tag: View,
@@ -75,7 +81,6 @@ function getElement(node, children) {
         ...attributes,
         style: styles.view,
       }
-      // mergeStyle(attributes, styles.view),
     }
   } else if (name === 'img') {
     attributes.source = {uri: attributes.src}

@@ -17,7 +17,7 @@ class App extends React.Component {
     return (
       <ScrollView style={styles.root}>
         <View>
-          <Text style={styles.title}>Transformed Tesult</Text>
+          <Text style={styles.title}>Transformed Result</Text>
           <View style={styles.preview}>
             {component}
           </View>
