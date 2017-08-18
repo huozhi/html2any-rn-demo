@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   span: {
-    // fontStyle: 14,
     fontSize: 15,
   },
   text: {
@@ -40,7 +39,12 @@ const styles = StyleSheet.create({
   },
   view: {
     width: w.width,
-    height: w.height,
+    height: w.height / 3,
+  },
+  img: {
+    width: 200,
+    height: 100,
+    marginVertical: 20,
   }
 })
 
@@ -53,35 +57,38 @@ function getElement(node, children) {
     // NOTICE: this way to handle string node is incorrect
     // RN does not have any method to inherit styles
     // so nested Text tags should be rendered as sibling Text nodes in a View better
-    return <Text>{he.decode(node)}</Text>
+    return he.decode(node)
+    // <Text>{he.decode(node)}</Text>
   }
-  const {name, attribues} = node
+  const {name, attributes} = node
   let elem
   if (textTag.indexOf(name) >= 0) {
     elem = {
       tag: Text,
-      props: mergeStyle(attribues, StyleSheet.flatten(styles.text, styles[name])),
+      // props: mergeStyle(attributes, StyleSheet.flatten(styles.text, styles[name])),
+      props: {style: styles[name]},
     }
   } else if (name === 'div') {
     elem = {
       tag: View,
       props: {
-        ...attribues,
+        ...attributes,
         style: styles.view,
       }
-      // mergeStyle(attribues, styles.view),
+      // mergeStyle(attributes, styles.view),
     }
   } else if (name === 'img') {
-    attribues.source = attribues.src
-    delete attribues.src
+    attributes.source = {uri: attributes.src}
+    delete attributes.src
+    attributes.style = styles.img
     elem = {
       tag: Image,
-      props: attribues,
+      props: attributes,
     }
   } else if (name === 'br') {
     elem = {
       tag: Text,
-      props: attribues,
+      props: attributes,
     }
   }
 

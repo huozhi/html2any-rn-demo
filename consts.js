@@ -1,15 +1,22 @@
 export const html = `
 <div>
   <p id="x34">
-    1234 &amp;
+    <span>1234 &amp;</span>
+    <span>123</span>
+    <b>456</b>
+    <span>123</span>
   </p>
   <b class="d3 d2" id="container">
     444
   </b>
+
+  <div>
+    <img src="https://facebook.github.io/react/img/logo_og.png">
+  </div>
 </div>
 `
 
-export const complexHtml = `
+export const html2 = `
 <div>
   <p style="text-align: center; font-size: 15px;" data-mce-style="text-align: center; font-size: 15px;">
   </p>
