@@ -1,6 +1,8 @@
 # html2any ReactNative Demo
 > try to translate html into React Native Components
 
+![demo](https://raw.githubusercontent.com/huozhi/html2any-rn-demo/master/public/html2any-rn-demo.png)
+
 Example HTML
 
 ```html
