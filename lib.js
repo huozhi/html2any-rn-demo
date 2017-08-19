@@ -65,15 +65,8 @@ function getElement(node, children) {
     const style = StyleSheet.flatten([styles.text, styles[name]])
     elem = {
       tag: Text,
-      props: {...attribues, style: styles[name]},
+      props: {...attributes, style: styles[name]},
     }
-    children = React.Children.map(children, (c) => {
-      if (typeof c === 'string') {
-        return <Text style={style}>{he.decode(c)}</Text>
-      } else if (c) {
-        return React.cloneElement(c, {...c.props}, c.children)
-      }
-    })
   } else if (name === 'div') {
     elem = {
       tag: View,
