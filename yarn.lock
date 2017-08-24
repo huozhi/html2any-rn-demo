@@ -2319,9 +2319,9 @@ html-encoding-sniffer@^1.0.1:
   dependencies:
     whatwg-encoding "^1.0.1"
 
-html2any@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/html2any/-/html2any-0.0.1.tgz#d6328cab012cd17498f4715d3f79a2f646defcce"
+html2any@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/html2any/-/html2any-0.0.3.tgz#5a0198f2bc9aeca50101663748e1b80c913260ca"
 
 http-errors@~1.3.1:
   version "1.3.1"
